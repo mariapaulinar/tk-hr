@@ -1,6 +1,6 @@
 <x-form-section submit="saveEmployee">
     <x-slot name="title">
-        {{ $employee ? __('Edit employee') : __('Create employee') }}
+        {{ isset($employee) ? __('Edit Employee') : __('Create Employee') }}
     </x-slot>
 
     <x-slot name="description">
@@ -20,115 +20,115 @@
                 </nav>
             </div>
 
-            <div class="mt-6 space-y-6" x-show="activeTab === 'general'">
+            <div class="mt-6 space-y-6" x-show="activeTab === 'general'" x-cloak>
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="personal_id" value="{{ __('Personal ID') }}" />
-                    <x-input id="personal_id" type="text" class="mt-1 block w-full" wire:model.defer="state.personal_id" />
-                    @error('state.personal_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    <x-input id="personal_id" type="text" class="mt-1 block w-full" wire:model="state.personal_id" />
+                    @error("state.personal_id") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="first_name" value="{{ __('First Name') }}" />
                     <x-input id="first_name" type="text" class="mt-1 block w-full" wire:model="state.first_name" />
-                    @error('state.first_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error("state.first_name") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="last_name" value="{{ __('Last Name') }}" />
                     <x-input id="last_name" type="text" class="mt-1 block w-full" wire:model="state.last_name" />
-                    @error('state.last_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error("state.last_name") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="full_name" value="{{ __('Full Name') }}" />
-                    <x-input id="full_name" type="text" class="mt-1 block w-full" wire:model="state.full_name" disabled />
-                </div>
-
-                <div class="col-span-6 sm:col-span-4">
-                    <x-label for="birth_date" value="{{ __('Birth Date') }}" />
-                    <x-input id="birth_date" type="date" class="mt-1 block w-full" wire:model="state.birth_date" />
-                    @error('state.birth_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <div class="col-span-6 sm:col-span-4">
-                    <x-label for="age" value="{{ __('Age') }}" />
-                    <x-input id="age" type="text" class="mt-1 block w-full" wire:model="state.age" disabled />
-                </div>
-
-                <div class="col-span-6 sm:col-span-4">
-                    <x-label for="start_date" value="{{ __('Start Date') }}" />
-                    <x-input id="start_date" type="date" class="mt-1 block w-full" wire:model="state.start_date" />
-                    @error('state.start_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <div class="col-span-6 sm:col-span-4">
-                    <x-label for="seniority" value="{{ __('Seniority (years)') }}" />
-                    <x-input id="seniority" type="text" class="mt-1 block w-full" wire:model="state.seniority" disabled />
+                    <x-input id="full_name" type="text" class="mt-1 block w-full bg-primary-100" wire:model="state.full_name" disabled />
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="gender" value="{{ __('Gender') }}" />
-                    <select id="gender" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model.defer="state.gender">
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="undefined">Undefined</option>
+                    <select id="gender" class="mt-1 block w-full border-primary-300 focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model.defer="state.gender">
+                        <option value="">{{ __('Select Gender') }}</option>
+                        @foreach(['male', 'female', 'other'] as $option)
+                            <option value="{{ $option }}">{{ __(ucfirst($option)) }}</option>
+                        @endforeach
                     </select>
-                    @error('state.gender') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error("state.gender") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <x-label for="birth_date" value="{{ __('Birth Date') }}" />
+                    <x-input id="birth_date" type="date" class="mt-1 block w-full" wire:model.defer="state.birth_date" />
+                    @error("state.birth_date") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <x-label for="age" value="{{ __('Age') }}" />
+                    <x-input id="age" type="text" class="mt-1 block w-full bg-primary-100" wire:model="state.age" disabled />
+                </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <x-label for="start_date" value="{{ __('Start Date') }}" />
+                    <x-input id="start_date" type="date" class="mt-1 block w-full" wire:model.defer="state.start_date" />
+                    @error("state.start_date") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="col-span-6 sm:col-span-4">
+                    <x-label for="seniority" value="{{ __('Seniority (years)') }}" />
+                    <x-input id="seniority" type="text" class="mt-1 block w-full bg-primary-100" wire:model="state.seniority" disabled />
                 </div>
             </div>
 
-            <div class="mt-6 space-y-6" x-show="activeTab === 'organization'">
+            <div class="mt-6 space-y-6" x-show="activeTab === 'organization'" x-cloak>
                 <div class="col-span-6 sm:col-span-4">
-                    <x-label for="company" value="{{ __('Company') }}" />
-                    <select id="company" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model.defer="state.company_id">
-                        <option value="">Select Company</option>
-                        @foreach($companies as $company)
-                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                    <x-label for="company_id" value="Company" />
+                    <select id="company_id" class="mt-1 block w-full border-primary-300 focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="state.company_id">
+                        <option value="">{{ __("Select company") }}</option>
+                        @foreach($this->companies as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
-                    @error('state.company_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error("state.company_id") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
-                    <x-label for="work_center" value="{{ __('Work Center') }}" />
-                    <select id="work_center" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model.defer="state.workplace_id">
-                        <option value="">Select Work Center</option>
-                        @foreach($workplaces as $workplace)
-                            <option value="{{ $workplace->id }}">{{ $workplace->name }}</option>
+                    <x-label for="workplace_id" value="Workplace" />
+                    <select id="workplace_id" class="mt-1 block w-full border-primary-300 focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="state.workplace_id">
+                        <option value="">{{ __("Select workplace") }}</option>
+                        @foreach($this->workplaces as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
-                    @error('state.workplace_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error("state.workplace_id") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
-                    <x-label for="position" value="{{ __('Position') }}" />
-                    <select id="position" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model.defer="state.position_id">
-                        <option value="">Select Position</option>
-                        @foreach($positions as $position)
-                            <option value="{{ $position->id }}">{{ $position->name }}</option>
+                    <x-label for="position_id" value="Position" />
+                    <select id="position_id" class="mt-1 block w-full border-primary-300 focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="state.position_id">
+                        <option value="">{{ __("Select position") }}</option>
+                        @foreach($this->positions as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
-                    @error('state.position_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error("state.position_id") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
-                    <x-label for="country" value="{{ __('Country') }}" />
-                    <select id="country" class="mt-1 block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model.defer="state.country_id">
-                        <option value="">Select Country</option>
-                        @foreach($countries as $country)
-                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                    <x-label for="country_id" value="Country" />
+                    <select id="country_id" class="mt-1 block w-full border-primary-300 focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50 rounded-md shadow-sm" wire:model="state.country_id">
+                        <option value="">{{ __("Select country") }}</option>
+                        @foreach($this->countries as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
-                    @error('state.country_id') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error("state.country_id") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
             </div>
         </div>
     </x-slot>
 
     <x-slot name="actions">
-        <x-button>
-            {{ $employee ? __('Update') : __('Save') }}
+        <x-button class="btn-primary">
+            {{ isset($employee) ? __('Update') : __('Save') }}
         </x-button>
     </x-slot>
 </x-form-section>

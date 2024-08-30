@@ -10,44 +10,32 @@ class EmployeeTable extends Component
 {
     use WithPagination;
 
-    public $search = '';
-    public $sortField = 'full_name';
-    public $sortAsc = true;
-    public $perPage = 10;
+    public $sortField = 'personal_id'; // Campo por defecto para ordenar
+    public $sortDirection = 'asc'; // Dirección por defecto para ordenar
 
-    protected $service;
+    protected $employeeService;
 
-    public function __construct()
+    public function boot(EmployeeService $employeeService)
     {
-        $this->service = app(EmployeeService::class);
-    }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
+        $this->employeeService = $employeeService;
     }
 
     public function sortBy($field)
     {
-        $this->sortAsc = $this->sortField === $field ? !$this->sortAsc : true;
-        $this->sortField = $field;
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
     }
 
     public function render()
     {
-        // La consulta se realiza a través del servicio
-        $employeesQuery = $this->service->getEmployeeQuery()
-            ->when($this->search, function ($query) {
-                $query->where(function ($subQuery) {
-                    $subQuery->where('full_name', 'like', '%' . $this->search . '%')
-                             ->orWhere('personal_id', 'like', '%' . $this->search . '%');
-                });
-            })
-            ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc');
+        $employees = $this->employeeService->getEmployees($this->sortField, $this->sortDirection, 10);
 
-        // Paginar la consulta
-        $employees = $employeesQuery->paginate($this->perPage);
-
-        return view('livewire.employees.employee-table', ['employees' => $employees]);
+        return view('livewire.employees.employee-table', [
+            'employees' => $employees,
+        ]);
     }
 }
