@@ -17,8 +17,8 @@ Route::middleware([
     Route::group(['prefix' => 'employees'], function () {
         Route::get('/', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employees.index');
         Route::get('/create', [App\Http\Controllers\EmployeeController::class, 'create'])->name('employees.create');
-        Route::get('/edit', [App\Http\Controllers\EmployeeController::class, 'edit'])->name('employees.edit');
-        Route::get('/{employee}', [App\Http\Controllers\EmployeeController::class, 'show'])->name('employees.show');
+        //Route::get('/edit', [App\Http\Controllers\EmployeeController::class, 'edit'])->name('employees.edit');
+        Route::get('/{employee}', [App\Http\Controllers\EmployeeController::class, 'edit'])->name('employees.edit');
         Route::delete('/{employee}', [App\Http\Controllers\EmployeeController::class, 'destroy'])->name('employees.destroy');
     });
 });

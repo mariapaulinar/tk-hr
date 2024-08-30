@@ -16,24 +16,11 @@ use Carbon\Carbon;
 class EmployeeForm extends Component
 {
     public $employee;
-    public $companies;
-    public $workplaces;
-    public $positions;
-    public $countries;
-    
-    public $state = [
-        'first_name' => '',
-        'last_name' => '',
-        'full_name' => '',
-        'birth_date' => '',
-        'age' => '',
-        'start_date' => '',
-        'seniority' => '',
-        'company_id' => '',
-        'workplace_id' => '',
-        'position_id' => '',
-        'country_id' => '',
-    ];
+    public $state = [];
+    public $companies = [];
+    public $workplaces = [];
+    public $positions = [];
+    public $countries = [];
 
     protected $employeeService;
 
@@ -42,19 +29,46 @@ class EmployeeForm extends Component
         $this->employeeService = $employeeService;
     }
 
-    public function mount($employeeId = null)
+    public function mount($employee = null)
     {
+        $this->employee = $employee;
+        if ($employee) {
+            $this->state = $employee->toArray();
+        } else {
+            $this->state = [
+                'personal_id' => '',
+                'first_name' => '',
+                'last_name' => '',
+                'full_name' => '',
+                'birth_date' => '',
+                'age' => '',
+                'start_date' => '',
+                'seniority' => '',
+                'gender' => '',
+                'company_id' => '',
+                'workplace_id' => '',
+                'position_id' => '',
+                'country_id' => '',
+            ];
+        }
+
         $this->companies = Company::all();
         $this->workplaces = Workplace::all();
         $this->positions = Position::all();
         $this->countries = Country::all();
 
-        if ($employeeId) {
-            $this->employee = $this->employeeService->getEmployeeById($employeeId);
-            $this->state = array_merge($this->state, $this->employee->toArray());
-        }
-        
         $this->calculateAllFields();
+    }
+
+    public function updated($propertyName)
+    {
+        if (in_array($propertyName, ['state.first_name', 'state.last_name'])) {
+            $this->calculateFullName();
+        } elseif ($propertyName === 'state.birth_date') {
+            $this->calculateAge();
+        } elseif ($propertyName === 'state.start_date') {
+            $this->calculateSeniority();
+        }
     }
 
     public function updatedStateFirstName($value)

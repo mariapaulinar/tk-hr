@@ -6,19 +6,44 @@ use App\Models\Employee;
 
 class EmployeeRepository
 {
-    public function getEmployeeQuery()
+    public function getEmployees($sortField, $sortDirection, $perPage)
     {
-        return Employee::query()->with(['company', 'workplace', 'position', 'country']);
+        $query = Employee::query();
+
+        if (in_array($sortField, ['position', 'company', 'workplace', 'country'])) {
+            $relation = $sortField;
+            $relationTable = $this->getRelationTableName($relation);
+            $sortField = 'name';
+            $query = $query->join($relationTable, 'employees.' . $relation . '_id', '=', $relationTable . '.id')
+                           ->select('employees.*', $relationTable . '.name as ' . $relation . '_name')
+                           ->orderBy($relation . '_name', $sortDirection);
+        } else {
+            $query = $query->orderBy($sortField, $sortDirection);
+        }
+
+        return $query->paginate($perPage);
     }
 
-    public function getAll()
+    private function getRelationTableName($relation)
     {
-        return $this->getEmployeeQuery()->get();
+        $relationTables = [
+            'position' => 'positions',
+            'company' => 'companies',
+            'workplace' => 'workplaces',
+            'country' => 'countries'
+        ];
+
+        return $relationTables[$relation] ?? $relation . 's';
+    }
+
+    public function getAllEmployees()
+    {
+        return Employee::all();
     }
 
     public function findById($id)
     {
-        return $this->getEmployeeQuery()->findOrFail($id);
+        return Employee::findOrFail($id);
     }
 
     public function create(array $data)

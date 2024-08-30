@@ -14,14 +14,14 @@ class EmployeeService
         $this->employeeRepository = $employeeRepository;
     }
 
-    public function getEmployeeQuery()
+    public function getEmployees($sortField, $sortDirection, $perPage)
     {
-        return $this->employeeRepository->getEmployeeQuery();
+        return $this->employeeRepository->getEmployees($sortField, $sortDirection, $perPage);
     }
 
     public function getAllEmployees()
     {
-        return $this->employeeRepository->getAll();
+        return $this->employeeRepository->getAllEmployees();
     }
 
     public function getEmployeeById($id)

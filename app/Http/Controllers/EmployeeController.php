@@ -35,6 +35,7 @@ class EmployeeController extends Controller
 
     public function edit(Employee $employee)
     {
+        $employee = $this->service->getEmployeeById($employee->id);
         return view('employees.edit', compact('employee'));
     }
 
