@@ -12,7 +12,7 @@ class CountriesSeeder extends Seeder
      */
     public function run(): void
     {
-        $json = file_get_contents(public_path('storage/codes.json'));
+        $json = file_get_contents(resource_path('js/countries.json'));
         $countries = json_decode($json, true);
 
         \App\Models\Country::query()->delete();
