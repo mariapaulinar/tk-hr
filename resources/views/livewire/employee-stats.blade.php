@@ -1,6 +1,6 @@
 <div class="container mx-auto py-8">
     <div class="overflow-x-auto px-4">
-        <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+        <table class="w-full bg-white border border-gray-200 shadow-md rounded-lg">
             <thead>
                 <tr>
                     <th class="px-4 py-2 border-b border-gray-200"></th>
@@ -11,45 +11,18 @@
             </thead>
             <tbody>
                 @foreach ($countries as $country)
-                    <tr class="{{ $loop->even ? 'bg-gray-100' : '' }}">
+                    <tr>
                         <td class="px-4 py-2 border-b border-gray-200 flex items-right">
                             <span class="mr-2">
-                                @switch($country->country)
-                                    @case('Colombia')
-                                        🇨🇴
-                                        @break
-                                    @case('Spain')
-                                        🇪🇸
-                                        @break
-                                    @case('France')
-                                        🇫🇷
-                                        @break
-                                    @case('Portugal')
-                                        🇵🇹
-                                        @break
-                                    @case('Netherlands')
-                                        🇳🇱
-                                        @break
-                                    @case('Belgium')
-                                        🇧🇪
-                                        @break
-                                    @case('Sweden')
-                                        🇸🇪
-                                        @break
-                                    @case('Norway')
-                                        🇳🇴
-                                        @break
-                                    @case('Denmark')
-                                        🇩🇰
-                                        @break
-                                    @case('UK')
-                                        🇬🇧
-                                        @break
-                                    @default
-                                        🏳️
-                                @endswitch
+                            <img
+                                src="https://flagcdn.com/32x24/{{ $country->country_code }}.png"
+                                srcset="https://flagcdn.com/64x48/{{ $country->country_code }}.png 2x,
+                                    https://flagcdn.com/96x72/{{ $country->country_code }}.png 3x"
+                                width="32"
+                                    height="24"
+                                    alt="{{ $country->country_name }}">
                             </span>
-                            <span>{{ $country->country }}</span>
+                            <span>{{ $country->country_name }}</span>
                         </td>
                         <td class="px-4 py-2 border-b border-gray-200 text-center">{{ $country->male }}</td>
                         <td class="px-4 py-2 border-b border-gray-200 text-center">{{ $country->female }}</td>
@@ -57,7 +30,7 @@
                     </tr>
                 @endforeach
                 <tr class="font-bold">
-                    <td class="px-4 py-2 border-t border-gray-200 text-center">TOTAL</td>
+                    <th class="px-4 py-2 border-t border-gray-200 text-center">Total</th>
                     <td class="px-4 py-2 border-t border-gray-200 text-center">{{ $totals['male'] }}</td>
                     <td class="px-4 py-2 border-t border-gray-200 text-center">{{ $totals['female'] }}</td>
                     <td class="px-4 py-2 border-t border-gray-200 text-center">{{ $totals['total'] }}</td>

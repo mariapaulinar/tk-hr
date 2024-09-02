@@ -12,11 +12,30 @@ use App\Services\EmployeeService;
 use App\Http\Requests\StoreEmployeeRequest;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Livewire\WithFileUploads;
 
 class EmployeeForm extends Component
 {
+    use WithFileUploads;
+
     public $employee;
-    public $state = [];
+    public $state = [
+        'searchCountry' => '',
+        'personal_id' => '',
+        'first_name' => '',
+        'last_name' => '',
+        'full_name' => '',
+        'birth_date' => '',
+        'age' => '',
+        'start_date' => '',
+        'seniority' => '',
+        'gender' => '',
+        'company_id' => '',
+        'workplace_id' => '',
+        'position_id' => '',
+        'country_id' => null,
+        'photo' => null,
+    ];
     public $companies = [];
     public $workplaces = [];
     public $positions = [];
@@ -49,13 +68,14 @@ class EmployeeForm extends Component
                 'workplace_id' => '',
                 'position_id' => '',
                 'country_id' => '',
+                'photo' => null,
             ];
         }
 
         $this->companies = Company::all();
         $this->workplaces = Workplace::all();
         $this->positions = Position::all();
-        $this->countries = Country::all();
+        $this->countries = Country::where('enabled', true)->get();
 
         $this->calculateAllFields();
     }
@@ -125,10 +145,17 @@ class EmployeeForm extends Component
 
     public function saveEmployee()
     {
-        $request = new StoreEmployeeRequest();
-        $validatedData = $this->validate($request->rules(), $request->messages());
-
+        
         try {
+            $request = new StoreEmployeeRequest();
+            $validatedData = $this->validate($request->rules(), $request->messages());
+
+            if ($validatedData['state']['photo']) {
+                $image = $validatedData['state']['photo'];
+                $imageBase64 = base64_encode(file_get_contents($image->getRealPath()));
+                $validatedData['state']['photo'] = $imageBase64;
+            }
+
             DB::beginTransaction();
 
             if ($this->employee && $this->employee->exists) {
