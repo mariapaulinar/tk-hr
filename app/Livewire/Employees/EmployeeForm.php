@@ -12,9 +12,12 @@ use App\Services\EmployeeService;
 use App\Http\Requests\StoreEmployeeRequest;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Livewire\WithFileUploads;
 
 class EmployeeForm extends Component
 {
+    use WithFileUploads;
+
     public $employee;
     public $state = [
         'searchCountry' => '',
@@ -31,6 +34,7 @@ class EmployeeForm extends Component
         'workplace_id' => '',
         'position_id' => '',
         'country_id' => null,
+        'photo' => null,
     ];
     public $companies = [];
     public $workplaces = [];
@@ -64,6 +68,7 @@ class EmployeeForm extends Component
                 'workplace_id' => '',
                 'position_id' => '',
                 'country_id' => '',
+                'photo' => null,
             ];
         }
 
@@ -140,10 +145,17 @@ class EmployeeForm extends Component
 
     public function saveEmployee()
     {
-        $request = new StoreEmployeeRequest();
-        $validatedData = $this->validate($request->rules(), $request->messages());
-
+        
         try {
+            $request = new StoreEmployeeRequest();
+            $validatedData = $this->validate($request->rules(), $request->messages());
+
+            if ($validatedData['state']['photo']) {
+                $image = $validatedData['state']['photo'];
+                $imageBase64 = base64_encode(file_get_contents($image->getRealPath()));
+                $validatedData['state']['photo'] = $imageBase64;
+            }
+
             DB::beginTransaction();
 
             if ($this->employee && $this->employee->exists) {

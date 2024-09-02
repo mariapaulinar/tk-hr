@@ -76,6 +76,18 @@
                     <x-label for="seniority" value="{{ __('Seniority (years)') }}" />
                     <x-input id="seniority" type="text" class="mt-1 block w-full bg-primary-100" wire:model="state.seniority" disabled />
                 </div>
+                <div class="col-span-6 sm:col-span-4">
+                    <x-label for="photo" value="{{ __('Photo') }}" />
+                    <div id="photo-preview" class="mt-2">
+                        @if ($employee && $employee->photo)
+                            <img src="data:image/jpeg;base64,{{ $employee->photo }}" alt="Foto del empleado" style="max-width: 200px;">
+                        @else
+                            <p>{{ __('No tiene foto') }}</p>
+                        @endif
+                    </div>
+                    <x-input id="photo" name="photo" type="file" class="mt-1 block w-full" wire:model="state.photo" accept="image/*" />
+                    @error("state.photo") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
             </div>
 
             <div class="mt-6 space-y-6" x-show="activeTab === 'organization'" x-cloak>

@@ -1,4 +1,4 @@
-<nav x-data="{ open: false, employeesOpen: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false, employeesOpen: false, usersOpen: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -52,6 +52,23 @@
                                         </x-dropdown-link>
                                         <x-dropdown-link href="{{ route('costs-reports.report') }}" :active="request()->routeIs('costs-reports.report')">
                                             File Report
+                                        </x-dropdown-link>
+                                    </div>
+                                </x-slot>
+                            </x-dropdown>
+                        </div>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <div class="cursor-pointer inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
+                            <x-dropdown align="left" width="60">
+                                <x-slot name="trigger">
+                                    Users
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="w-60">
+                                        <x-dropdown-link href="{{ route('user-admin') }}" :active="request()->routeIs('user-admin')">
+                                            User Admin
                                         </x-dropdown-link>
                                     </div>
                                 </x-slot>

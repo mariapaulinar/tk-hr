@@ -24,6 +24,7 @@ class StoreEmployeeRequest extends FormRequest
             'state.workplace_id' => 'required|integer|exists:workplaces,id',
             'state.position_id' => 'required|integer|exists:positions,id',
             'state.country_id' => 'required|integer|exists:countries,id',
+            'state.photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
@@ -49,6 +50,9 @@ class StoreEmployeeRequest extends FormRequest
             'state.position_id.exists' => 'The selected position is invalid.',
             'state.country_id.required' => 'The country is required.',
             'state.country_id.exists' => 'The selected country is invalid.',
+            'state.photo.image' => 'The photo must be an image.',
+            'state.photo.mimes' => 'The photo must be in jpeg, png, jpg, gif, or svg format.',
+            'state.photo.max' => 'The photo must be less than 2 MB.',
         ];
     }
 }

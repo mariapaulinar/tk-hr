@@ -12,7 +12,7 @@ class Employee extends Model
     protected $fillable = [
         'personal_id', 'first_name', 'last_name', 'full_name',
         'birth_date', 'start_date', 'gender',
-        'company_id', 'workplace_id', 'position_id', 'country_id'
+        'company_id', 'workplace_id', 'position_id', 'country_id', 'photo'
     ];
 
     public function company()
