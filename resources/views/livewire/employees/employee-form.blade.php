@@ -29,13 +29,13 @@
 
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="first_name" value="{{ __('First Name') }}" />
-                    <x-input id="first_name" type="text" class="mt-1 block w-full" wire:model="state.first_name" />
+                    <x-input id="first_name" type="text" class="mt-1 block w-full" wire:model.blur="state.first_name" />
                     @error("state.first_name") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="last_name" value="{{ __('Last Name') }}" />
-                    <x-input id="last_name" type="text" class="mt-1 block w-full" wire:model="state.last_name" />
+                    <x-input id="last_name" type="text" class="mt-1 block w-full" wire:model.blur="state.last_name" />
                     @error("state.last_name") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
@@ -57,7 +57,7 @@
 
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="birth_date" value="{{ __('Birth Date') }}" />
-                    <x-input id="birth_date" type="date" class="mt-1 block w-full" wire:model.defer="state.birth_date" />
+                    <x-input id="birth_date" type="date" class="mt-1 block w-full" wire:model.blur="state.birth_date" />
                     @error("state.birth_date") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
@@ -68,7 +68,7 @@
 
                 <div class="col-span-6 sm:col-span-4">
                     <x-label for="start_date" value="{{ __('Start Date') }}" />
-                    <x-input id="start_date" type="date" class="mt-1 block w-full" wire:model.defer="state.start_date" />
+                    <x-input id="start_date" type="date" class="mt-1 block w-full" wire:model.blur="state.start_date" />
                     @error("state.start_date") <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 

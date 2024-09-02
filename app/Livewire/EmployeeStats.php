@@ -13,11 +13,13 @@ class EmployeeStats extends Component
 
     public function mount()
     {
-        $this->countries = Country::select('countries.name as country',
+        $this->countries = Country::select('countries.name as country_name',
+            'countries.code as country_code',
             DB::raw('SUM(employees.gender = "male") as male'),
             DB::raw('SUM(employees.gender = "female") as female'))
             ->leftJoin('employees', 'countries.id', '=', 'employees.country_id')
-            ->groupBy('countries.name')
+            ->where('countries.enabled', true)
+            ->groupBy('countries.name', 'countries.code')
             ->get()
             ->map(function ($item) {
                 $item->female = (int)$item->female;
@@ -34,7 +36,7 @@ class EmployeeStats extends Component
             'female' => $this->countries->sum('female'),
             'total' => $this->countries->sum('total')
         ];
-
+        
         return view('livewire.employee-stats', [
             'totals' => $totals,
             'countries' => $this->countries

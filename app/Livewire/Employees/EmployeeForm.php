@@ -16,7 +16,22 @@ use Carbon\Carbon;
 class EmployeeForm extends Component
 {
     public $employee;
-    public $state = [];
+    public $state = [
+        'searchCountry' => '',
+        'personal_id' => '',
+        'first_name' => '',
+        'last_name' => '',
+        'full_name' => '',
+        'birth_date' => '',
+        'age' => '',
+        'start_date' => '',
+        'seniority' => '',
+        'gender' => '',
+        'company_id' => '',
+        'workplace_id' => '',
+        'position_id' => '',
+        'country_id' => null,
+    ];
     public $companies = [];
     public $workplaces = [];
     public $positions = [];
@@ -55,7 +70,7 @@ class EmployeeForm extends Component
         $this->companies = Company::all();
         $this->workplaces = Workplace::all();
         $this->positions = Position::all();
-        $this->countries = Country::all();
+        $this->countries = Country::where('enabled', true)->get();
 
         $this->calculateAllFields();
     }
